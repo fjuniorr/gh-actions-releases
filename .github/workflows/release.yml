@@ -1,9 +1,6 @@
 name: Main
 
-on:
-  push:
-    tags:
-      - "v*"
+on: push
 
 jobs:
   build:
@@ -12,7 +9,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - run: git log > log.txt
+      - run: cat log.txt
       - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
           files: log.txt
